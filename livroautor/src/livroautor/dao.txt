@@ -1,0 +1,39 @@
+   public void Atualizar (Funcionario funcionarios) throws SQLException{
+        Connection con = null;
+        PreparedStatement stmt = null;
+          try {
+            con = ConnectionFactory.getConnection();
+                String sql ="UPDATE contatos SET(dados para atualizar) WHERE id=(?)";
+                stmt = con.prepareStatement(sql);
+		stmt.setString(1, contatos.getNome());<- dados realizado para atualizar 
+		stmt.executeUpdate();       
+			  JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+        } catch (SQLException ex) {
+            try{con.rollback();}catch(SQLException ex1){System.out.println("Erro ao tentar rollback. Ex="+ex1.getMessage());};
+            throw new RuntimeException("Erro a atualizar banco de dados. Origem="+ex.getMessage());
+        } finally{
+            try{stmt.close();}catch(Exception ex){System.out.println("Erro ao fechar stmt. Ex="+ex.getMessage());};
+            try{con.close();;}catch(Exception ex){System.out.println("Erro ao fechar conexão. Ex="+ex.getMessage());};
+        }
+
+}
+    
+    public void Deletar(Funcionario funcionarios) throws SQLException{
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        try{
+            String sql = "DELETE FROM contatos WHERE id ?";
+            stmt = con.prepareStatement(sql);
+            stmt.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
+        } catch (SQLException ex) {
+            try{con.rollback();}catch(SQLException ex1){System.out.println("Erro ao tentar rollback. Ex="+ex1.getMessage());};
+            throw new RuntimeException("Erro a Excluir no banco de dados. Origem="+ex.getMessage());
+        } finally{
+            try{stmt.close();}catch(Exception ex){System.out.println("Erro ao fechar stmt. Ex="+ex.getMessage());};
+            try{con.close();;}catch(Exception ex){System.out.println("Erro ao fechar conexão. Ex="+ex.getMessage());};
+        }
+
+    }
+   
